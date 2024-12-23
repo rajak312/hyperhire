@@ -85,7 +85,7 @@ function getAllItemIds(items: TreeItem[]): string[] {
   }, []);
 }
 
-export function TreeMenu() {
+export function MenuFileTree() {
   const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
     new Set()
   );
@@ -120,7 +120,7 @@ export function TreeMenu() {
       const currentLines = [...parentLines, !isLastItem];
 
       return (
-        <div key={item.id} className="flex flex-col">
+        <div key={item.id} className="flex  flex-col">
           <div className="flex items-center">
             {parentLines.map((showLine, i) => (
               <div
@@ -172,7 +172,7 @@ export function TreeMenu() {
   };
 
   return (
-    <div className="w-64 rounded-lg p-4">
+    <div className="w-full rounded-lg p-4">
       <div className="flex items-center gap-2 mb-4">
         <button
           className="bg-[#1D2939] text-white p-2 rounded-full"
