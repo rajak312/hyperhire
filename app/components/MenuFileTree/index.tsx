@@ -23,6 +23,10 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
     new Set()
   );
 
+  React.useEffect(() => {
+    handleExpandAll();
+  }, [menus]);
+
   const handleToggle = (itemId: string) => {
     setExpandedItems((prevExpandedItems) => {
       const newExpanded = new Set(prevExpandedItems);
@@ -91,7 +95,8 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
               {item.depth !== 0 && (
                 <button
                   className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600"
-                  onClick={() => onAdd?.(item)}>
+                  onClick={() => onAdd?.(item)}
+                >
                   <Plus className="h-3 w-3" />
                   <span className="sr-only">Add</span>
                 </button>
@@ -113,7 +118,8 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
       <div className="flex items-center gap-2 mb-4">
         <button
           className="bg-[#1D2939] text-white p-2 rounded-full"
-          onClick={handleExpandAll}>
+          onClick={handleExpandAll}
+        >
           Expand All
         </button>
         <button className="border p-2 rounded-full" onClick={handleCollapseAll}>

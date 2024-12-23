@@ -1,10 +1,8 @@
-"use client";
-
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import AppsIcon from "../assets/apps.svg";
-import fileIcons from "../assets/file.svg";
+import AppsIcon from "app/assets/apps.svg";
+import fileIcons from "app/assets/file.svg";
 import Image from "node_modules/next/image";
 
 export default function MenuHeader() {
@@ -18,7 +16,8 @@ export default function MenuHeader() {
           <li>
             <Link
               href="#"
-              className="hover:text-gray-700 flex items-center justify-center gap-4">
+              className="hover:text-gray-700 flex items-center justify-center gap-4"
+            >
               <Image src={fileIcons} alt="file" width={20} height={20} /> /
               Menus
             </Link>
@@ -41,7 +40,8 @@ export default function MenuHeader() {
         {/* Menu Item */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+          className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+        >
           <span className="text-sm font-medium">system management</span>
           <ChevronDown
             className={`w-4 h-4 text-gray-500 transition-transform ${
