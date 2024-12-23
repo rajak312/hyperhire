@@ -15,6 +15,7 @@ import { Menu as MenuIcon } from "lucide-react";
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const [selectedMenu, setSelectedMenu] = useState<Menu | null>(null);
+  const [openedMenu, setOpenedSubMenu] = useState<string>("");
   const { menus, loading } = useSelector((state: RootState) => state.menu);
 
   async function fetchMenu() {
@@ -44,13 +45,13 @@ const MenusPage: React.FC = () => {
     <div className="flex bg-white text-black h-screen">
       {/* Sidebar */}
       <div className="sticky top-0 h-screen">
-        <Sidebar menus={menus} />
+        <Sidebar menus={menus} onSelectSubMenu={setOpenedSubMenu} />
       </div>
 
       {/* Main Content */}
       <div className="w-full hide-scrollbar overflow-y-scroll">
         <div className="grid grid-cols-1 w-full md:grid-cols-2">
-          <MenuHeader />
+          <MenuHeader menu={openedMenu} />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 w-full">
           <div className="w-[450px] hide-scrollbar overflow-y-scroll">

@@ -19,6 +19,7 @@ export interface MenuFileTreeProps {
 }
 
 export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
+  const [selectedButton, setSelectedButton] = React.useState("expand");
   const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
     new Set()
   );
@@ -42,10 +43,12 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
   const handleExpandAll = () => {
     const allIds = getAllItemIds(menus);
     setExpandedItems(new Set(allIds));
+    setSelectedButton("expand");
   };
 
   const handleCollapseAll = () => {
     setExpandedItems(new Set());
+    setSelectedButton("collapse");
   };
 
   const renderTreeItems = (
@@ -59,22 +62,23 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
       const currentLines = [...parentLines, !isLastItem];
 
       return (
-        <div key={item.id} className="flex flex-col">
-          <div className="flex  items-center">
+        <div key={item.id} className="flex flex-col mb-2">
+          {/* Added margin-bottom for more gap */}
+          <div className="flex items-center">
             {parentLines.map((showLine, i) => (
               <div
                 key={i}
                 className={cn(
                   "w-4 h-6 relative",
                   showLine &&
-                    "before:absolute  before:top-0 before:left-1/2 before:border-l before:border-border before:h-full"
+                    "before:absolute before:top-0 before:left-1/2 before:border-l before:border-border before:h-full"
                 )}
               />
             ))}
             <div
               className={cn(
-                "w-4 h-6  relative",
-                "before:absolute before:top-0 before:left-1/2 before:border-l  before:border-border",
+                "w-4 h-6 relative",
+                "before:absolute before:top-0 before:left-1/2 before:border-l before:border-border",
                 "after:absolute after:top-1/2 after:left-1/2 after:border-t after:border-border after:w-1/2",
                 isLastItem ? "before:h-1/2" : "before:h-full"
               )}
@@ -92,15 +96,13 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
                 <div className="w-4" />
               )}
               <span className="text-sm">{item.name}</span>
-              {item.depth !== 0 && (
-                <button
-                  className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600"
-                  onClick={() => onAdd?.(item)}
-                >
-                  <Plus className="h-3 w-3" />
-                  <span className="sr-only">Add</span>
-                </button>
-              )}
+              <button
+                className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600"
+                onClick={() => onAdd?.(item)}
+              >
+                <Plus className="h-3 w-3" />
+                <span className="sr-only">Add</span>
+              </button>
             </div>
           </div>
           {hasChildren && expandedItems.has(item.id) && item.children && (
@@ -117,12 +119,19 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
     <div className="w-full rounded-lg p-4">
       <div className="flex items-center gap-2 mb-4">
         <button
-          className="bg-[#1D2939] text-white p-2 rounded-full"
+          className={`${
+            selectedButton === "expand" ? "bg-[#1D2939]" : ""
+          } text-white p-2 pl-8 pr-8 rounded-full`}
           onClick={handleExpandAll}
         >
           Expand All
         </button>
-        <button className="border p-2 rounded-full" onClick={handleCollapseAll}>
+        <button
+          className={`${
+            selectedButton === "collapse" ? "bg-[#1D2939]" : ""
+          }border p-2  pl-8 pr-8  rounded-full`}
+          onClick={handleCollapseAll}
+        >
           Collapse All
         </button>
       </div>
