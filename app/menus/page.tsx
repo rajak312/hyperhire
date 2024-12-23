@@ -7,8 +7,9 @@ import { fetchMenus, Menu } from "app/store/menuSlice";
 import { useAppDispatch } from "app/hooks/dispatch";
 import MenuForm from "app/components/MenuForm";
 import { Sidebar } from "app/components/SideBar";
-import { TreeMenu } from "app/components/MenuTree";
 import axios from "axios";
+import MenuHeader from "app/components/MenuHeader";
+import { MenuFileTree } from "app/components/MenuFileTree";
 
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -56,10 +57,15 @@ const MenusPage: React.FC = () => {
   return (
     <div className="flex bg-white text-black h-screen">
       {/* Sidebar */}
-      <Sidebar menus={menus} />
+      <div className="sticky top-0 h-screen">
+        <Sidebar menus={menus} />
+      </div>
 
       {/* Main Content */}
-      <TreeMenu />
+      <div className="w-[450px] hide-scrollbar overflow-y-scroll">
+        <MenuHeader />
+        <MenuFileTree />
+      </div>
     </div>
   );
 };
