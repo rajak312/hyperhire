@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 
-const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:5000";
+const API_BASE_URL =
+  process.env.API_BASE_URL || "https://hyperhire-api.onrender.com";
 
 export async function GET() {
   const response = await axios.get(`${API_BASE_URL}/menus`);
