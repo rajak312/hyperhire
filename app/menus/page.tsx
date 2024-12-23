@@ -14,6 +14,8 @@ const MenusPage: React.FC = () => {
 
   const { menus, loading } = useSelector((state: RootState) => state.menu);
 
+  console.log("Menus", menus);
+
   const [currentMenu, setCurrentMenu] = useState<Partial<Menu> | undefined>(
     undefined
   );
