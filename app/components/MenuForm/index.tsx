@@ -1,9 +1,11 @@
+"use client";
+
 import { Menu } from "app/store/menuSlice";
 import React, { useState } from "react";
 
 interface MenuFormProps {
   isEdit: boolean;
-  initialData: Partial<Menu> | null;
+  initialData?: Partial<Menu>;
   onSubmit: (menuData: Partial<Menu>) => void;
 }
 
@@ -12,57 +14,71 @@ const MenuForm: React.FC<MenuFormProps> = ({
   initialData,
   onSubmit,
 }) => {
-  const [formData, setFormData] = useState<Partial<Menu>>(initialData || {});
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const [menuName, setMenuName] = useState(initialData?.name || "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
+    onSubmit({ ...initialData, name: menuName });
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded bg-white">
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={formData.name || ""}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Depth</label>
-        <input
-          type="number"
-          name="depth"
-          value={formData.depth || 0}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-sm font-medium mb-1">Parent ID</label>
-        <input
-          type="text"
-          name="parentId"
-          value={formData.parentId || ""}
-          onChange={handleChange}
-          className="w-full px-3 py-2 border rounded"
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full px-3 py-2 bg-blue-500 text-white rounded"
-      >
-        {isEdit ? "Update" : "Create"}
-      </button>
-    </form>
+    <div className="bg-white shadow-md rounded-md p-6">
+      <h2 className="text-lg font-semibold">
+        {isEdit ? "Edit Menu" : "Add Menu"}
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Menu ID
+          </label>
+          <input
+            type="text"
+            value={initialData?.id || ""}
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Depth
+          </label>
+          <input
+            type="text"
+            value={initialData?.depth || ""}
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Parent Data
+          </label>
+          <input
+            type="text"
+            value={initialData?.parentId || ""}
+            readOnly
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700">
+            Name
+          </label>
+          <input
+            type="text"
+            value={menuName}
+            onChange={(e) => setMenuName(e.target.value)}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+          />
+        </div>
+        <button
+          type="submit"
+          className="mt-4 w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
+        >
+          Save
+        </button>
+      </form>
+    </div>
   );
 };
 
