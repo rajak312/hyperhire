@@ -1,61 +1,27 @@
-import axios from "axios";
 import { NextResponse } from "next/server";
+import axios from "axios";
 
-// Define the Menu interface
-interface Menu {
-  id: string;
-  name: string;
-  depth: number;
-  parentId: string | null;
-  children: Menu[];
-}
-
-// Dummy data for now
-const demoData: Menu[] = [
-  {
-    id: "1",
-    name: "System Management",
-    depth: 1,
-    parentId: null,
-    children: [
-      {
-        id: "2",
-        name: "Systems",
-        depth: 2,
-        parentId: "1",
-        children: [
-          {
-            id: "3",
-            name: "System Code",
-            depth: 3,
-            parentId: "2",
-            children: [],
-          },
-          {
-            id: "4",
-            name: "Code Registration",
-            depth: 3,
-            parentId: "2",
-            children: [],
-          },
-        ],
-      },
-      {
-        id: "5",
-        name: "Users & Groups",
-        depth: 2,
-        parentId: "1",
-        children: [],
-      },
-    ],
-  },
-];
+const API_BASE_URL = process.env.API_BASE_URL || "http://localhost:5000";
 
 export async function GET() {
-  // Uncomment this when API is ready
-  const response = await axios.get("http://localhost:5000/menus");
-  const data: Menu[] = response.data;
+  const response = await axios.get(`${API_BASE_URL}/menus`);
+  return NextResponse.json(response.data);
+}
 
-  // Using dummy data for now
-  return NextResponse.json(data);
+export async function POST(request: Request) {
+  const body = await request.json();
+  const response = await axios.post(`${API_BASE_URL}/menus`, body);
+  return NextResponse.json(response.data);
+}
+
+export async function PUT(request: Request) {
+  const body = await request.json();
+  const response = await axios.put(`${API_BASE_URL}/menus/${body.id}`, body);
+  return NextResponse.json(response.data);
+}
+
+export async function DELETE(request: Request) {
+  const { id } = await request.json();
+  const response = await axios.delete(`${API_BASE_URL}/menus/${id}`);
+  return NextResponse.json(response.data);
 }

@@ -1,44 +1,69 @@
-"use client"; // Client-side rendering
+"use client";
 
-import React from "react";
-import MenuTree from "../components/MenuTree";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "app/store";
+import { fetchMenus, Menu } from "app/store/menuSlice";
+import { useAppDispatch } from "app/hooks/dispatch";
+import MenuForm from "app/components/MenuForm";
+import MenuTree from "app/components/MenuTree";
+import { Sidebar } from "app/components/SideBar";
 
-// Demo menu data
-const demoMenus = [
-  {
-    id: "1",
-    name: "System Management",
-    depth: 1,
-    parentId: null,
-    children: [
-      {
-        id: "2",
-        name: "Systems",
-        depth: 2,
-        parentId: "1",
-        children: [
-          {
-            id: "3",
-            name: "System Code",
-            depth: 3,
-            parentId: "2",
-            children: [],
-          },
-          {
-            id: "4",
-            name: "Code Registration",
-            depth: 3,
-            parentId: "2",
-            children: [],
-          },
-        ],
-      },
-    ],
-  },
-];
+const MenusPage: React.FC = () => {
+  const dispatch = useAppDispatch();
 
-const Menus: React.FC = () => {
-  return <MenuTree menus={demoMenus} />;
+  const { menus, loading } = useSelector((state: RootState) => state.menu);
+
+  const [currentMenu, setCurrentMenu] = useState<Partial<Menu> | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  useEffect(() => {
+    dispatch(fetchMenus());
+  }, [dispatch]);
+
+  const handleAdd = (parentId: string): void => {
+    setCurrentMenu({ parentId, depth: 1 });
+    setShowForm(true);
+  };
+
+  const handleEdit = (menu: Menu): void => {
+    setCurrentMenu(menu);
+    setShowForm(true);
+  };
+
+  const handleDelete = (id: string): void => {};
+
+  const handleSubmit = (menuData: Partial<Menu>): void => {
+    setShowForm(false);
+  };
+
+  return (
+    <div className="flex h-screen">
+      <Sidebar />
+
+      {/* Main Content */}
+      <main className="w-3/4 p-4">
+        <h1 className="text-xl font-bold">Menu Management</h1>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <MenuTree
+            menus={menus}
+            onAdd={handleAdd}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        )}
+        {showForm && (
+          <MenuForm
+            isEdit={!!currentMenu?.id}
+            initialData={currentMenu}
+            onSubmit={handleSubmit}
+          />
+        )}
+      </main>
+    </div>
+  );
 };
 
-export default Menus;
+export default MenusPage;
