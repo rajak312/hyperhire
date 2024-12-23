@@ -49,8 +49,10 @@ const MenusPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="w-full hide-scrollbar overflow-y-scroll">
-        <MenuHeader />
-        <div className="flex w-full items-center">
+        <div className="grid grid-cols-1 w-full md:grid-cols-2">
+          <MenuHeader />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full">
           <div className="w-[450px] hide-scrollbar overflow-y-scroll">
             <MenuFileTree menus={menus} onAdd={setSelectedMenu} />
           </div>

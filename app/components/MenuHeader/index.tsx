@@ -9,15 +9,14 @@ export default function MenuHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="p-6 max-w-screen-xl mx-auto">
+    <div className="p-6 w-full mx-auto">
       {/* Breadcrumb */}
       <nav className="mb-8">
         <ol className="flex items-center space-x-2 text-sm text-gray-500">
           <li>
             <Link
               href="#"
-              className="hover:text-gray-700 flex items-center justify-center gap-4"
-            >
+              className="hover:text-gray-700 flex items-center justify-center gap-4">
               <Image src={fileIcons} alt="file" width={20} height={20} /> /
               Menus
             </Link>
@@ -40,8 +39,7 @@ export default function MenuHeader() {
         {/* Menu Item */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
-        >
+          className="w-full flex items-center justify-between p-4 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
           <span className="text-sm font-medium">system management</span>
           <ChevronDown
             className={`w-4 h-4 text-gray-500 transition-transform ${

@@ -5,7 +5,8 @@ import Link from "next/link";
 import React, { useState } from "react";
 import Image from "next/image";
 import { Menu } from "app/store/menuSlice";
-
+import Logo from "../../assets/logo.svg";
+import XLogo from "../../assets/menuS.svg";
 interface SidebarProps {
   menus: Menu[];
   onSelectMainMenu?: (menu: string) => void;
@@ -105,12 +106,12 @@ export function Sidebar({ menus, onSelectMainMenu }: SidebarProps) {
         {/* Logo */}
         <div className="flex h-16 items-center justify-between border-b border-gray-800 px-6">
           <Link href="/" className="text-xl font-bold text-white">
-            CLOIT
+            <Image src={Logo} alt="logo" width={100} height={100} />
           </Link>
           <button
             className="text-gray-400 lg:hidden"
             onClick={() => setIsOpen(false)}>
-            <X className="h-6 w-6" />
+            <Image src={XLogo} alt="logo" width={30} height={30} />
           </button>
         </div>
 
