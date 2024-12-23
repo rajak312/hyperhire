@@ -62,9 +62,10 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
           MenuID
         </label>
         <input
+          placeholder="id will be generate"
           id="menuId"
           type="text"
-          value={menu.id}
+          value=""
           readOnly
           className="w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm"
         />
@@ -85,13 +86,10 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
 
       <div className="space-y-1.5">
         <label className="block text-sm text-gray-600">parentId</label>
-        <label htmlFor="parentData" className="block text-sm text-gray-600">
-          ParentData
-        </label>
         <input
           id="parentData"
           type="text"
-          value={menu.parentId || ""}
+          value={menu.id || ""}
           readOnly
           className="w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm"
         />
