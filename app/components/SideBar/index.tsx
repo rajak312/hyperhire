@@ -48,6 +48,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <nav>
         <ul className="space-y-2">
           {menus?.map((menu) => {
+            console.log("childrens", menu.children);
             const isRootMenu = menu.depth === 0;
             const image = isRootMenu ? "/folder.png" : "/submenu.png";
             return (

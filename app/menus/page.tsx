@@ -23,15 +23,7 @@ const MenusPage: React.FC = () => {
   );
   const [showForm, setShowForm] = useState<boolean>(false);
 
-  async function fetchMenu() {
-    const response = await axios.get(
-      "https://hyperhire-api.onrender.com/menus"
-    );
-    console.log("Menus", response.data);
-  }
-
   useEffect(() => {
-    fetchMenu();
     dispatch(fetchMenus());
   }, [dispatch]);
 
