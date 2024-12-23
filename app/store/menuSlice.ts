@@ -38,11 +38,7 @@ export const fetchMenuById = createAsyncThunk(
 
 export const addMenu = createAsyncThunk(
   "menu/addMenu",
-  async (menuData: {
-    name: string;
-    depth: number;
-    parentId: string | null;
-  }) => {
+  async (menuData: { name: string; parentId: string | null }) => {
     const response = await axios.post(`/api/menus`, menuData);
     return response.data;
   }

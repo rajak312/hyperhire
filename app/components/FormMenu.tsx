@@ -1,38 +1,28 @@
+import { Menu } from "app/store/menuSlice";
 import React, { useState } from "react";
 
-interface FormValues {
-  depth: string;
-  parentData: string;
-  name: string;
+interface FormMenuProps {
+  menu: Menu;
+  onSubmit: (parentId: string, name: string) => void;
 }
 
-interface FormErrors {
-  depth?: string;
-  parentData?: string;
+interface FormValues {
   name?: string;
 }
 
-export default function FormMenu() {
+interface FormErrors {
+  name?: string;
+}
+
+export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
   const [formValues, setFormValues] = useState<FormValues>({
-    depth: "3",
-    parentData: "Systems",
-    name: "System Code",
+    name: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
 
   const validate = () => {
     const newErrors: FormErrors = {};
-
-    if (!formValues.depth || isNaN(Number(formValues.depth))) {
-      newErrors.depth = "Depth must be a valid number.";
-    } else if (Number(formValues.depth) <= 0) {
-      newErrors.depth = "Depth must be greater than 0.";
-    }
-
-    if (!formValues.parentData || formValues.parentData.trim().length === 0) {
-      newErrors.parentData = "ParentData is required.";
-    }
 
     if (!formValues.name || formValues.name.trim().length === 0) {
       newErrors.name = "Name is required.";
@@ -43,17 +33,16 @@ export default function FormMenu() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleChange =
-    (field: keyof FormValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormValues({
-        ...formValues,
-        [field]: e.target.value,
-      });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormValues({
+      ...formValues,
+      name: e.target.value,
+    });
 
-      if (errors[field]) {
-        setErrors({ ...errors, [field]: undefined }); // Clear error for the field
-      }
-    };
+    if (errors.name) {
+      setErrors({ ...errors, name: undefined });
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +50,8 @@ export default function FormMenu() {
     if (validate()) {
       console.log("Form Submitted:", formValues);
       // Perform your form submission logic here
+      if (!formValues.name) return;
+      onSubmit(menu.id, formValues.name);
     }
   };
 
@@ -70,7 +61,7 @@ export default function FormMenu() {
         <label className="block text-sm text-gray-600">MenuID</label>
         <input
           type="text"
-          value="56320ee9-6af6-11ed-a7ba-f220afe5e4a9"
+          value={menu.id}
           readOnly
           className="w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm"
         />
@@ -80,28 +71,20 @@ export default function FormMenu() {
         <label className="block text-sm text-gray-600">Depth</label>
         <input
           type="number"
-          value={formValues.depth}
-          onChange={handleChange("depth")}
-          className={`w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm ${
-            errors.depth ? "border-red-500" : ""
-          }`}
+          value={menu.depth}
+          readOnly
+          className="w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm"
         />
-        {errors.depth && <p className="text-sm text-red-500">{errors.depth}</p>}
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">ParentData</label>
+        <label className="block text-sm text-gray-600">parentId</label>
         <input
           type="text"
-          value={formValues.parentData}
-          onChange={handleChange("parentData")}
-          className={`w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm ${
-            errors.parentData ? "border-red-500" : ""
-          }`}
+          value={menu.parentId || ""}
+          readOnly
+          className="w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm"
         />
-        {errors.parentData && (
-          <p className="text-sm text-red-500">{errors.parentData}</p>
-        )}
       </div>
 
       <div className="space-y-1.5">
@@ -109,7 +92,7 @@ export default function FormMenu() {
         <input
           type="text"
           value={formValues.name}
-          onChange={handleChange("name")}
+          onChange={handleChange}
           className={`w-full px-3 py-2 bg-gray-50 rounded text-gray-600 text-sm ${
             errors.name ? "border-red-500" : ""
           }`}
@@ -119,7 +102,8 @@ export default function FormMenu() {
 
       <button
         type="submit"
-        className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
         Save
       </button>
     </form>

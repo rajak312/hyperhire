@@ -3,7 +3,7 @@ import React from "react";
 
 interface MenuTreeProps {
   menus: Menu[];
-  onAdd: (parentId: string) => void;
+  onAdd: (menu: Menu) => void;
   onEdit: (menu: Menu) => void;
   onDelete: (id: string) => void;
 }
@@ -21,7 +21,7 @@ const MenuTree: React.FC<MenuTreeProps> = ({
           <span className="text-sm font-medium text-gray-900">{menu.name}</span>
           <div className="space-x-2">
             <button
-              onClick={() => onAdd(menu.id)}
+              onClick={() => onAdd(menu)}
               className="text-blue-500 hover:underline text-sm"
             >
               Add

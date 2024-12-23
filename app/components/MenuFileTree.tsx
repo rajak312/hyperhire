@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, Plus } from "lucide-react";
 import cn from "classnames";
 import { Menu } from "app/store/menuSlice";
 
@@ -15,21 +15,24 @@ function getAllItemIds(items: Menu[]): string[] {
 
 export interface MenuFileTreeProps {
   menus: Menu[];
+  onAdd?: (menu: Menu) => void;
 }
 
-export function MenuFileTree({ menus }: MenuFileTreeProps) {
+export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
   const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
     new Set()
   );
 
   const handleToggle = (itemId: string) => {
-    const newExpanded = new Set(expandedItems);
-    if (newExpanded.has(itemId)) {
-      newExpanded.delete(itemId);
-    } else {
-      newExpanded.add(itemId);
-    }
-    setExpandedItems(newExpanded);
+    setExpandedItems((prevExpandedItems) => {
+      const newExpanded = new Set(prevExpandedItems);
+      if (newExpanded.has(itemId)) {
+        newExpanded.delete(itemId);
+      } else {
+        newExpanded.add(itemId);
+      }
+      return newExpanded;
+    });
   };
 
   const handleExpandAll = () => {
@@ -46,13 +49,13 @@ export function MenuFileTree({ menus }: MenuFileTreeProps) {
     level = 0,
     parentLines: boolean[] = []
   ) => {
-    return menus?.map((item, index) => {
+    return items.map((item, index) => {
       const isLastItem = index === items.length - 1;
       const hasChildren = item.children && item.children.length > 0;
       const currentLines = [...parentLines, !isLastItem];
 
       return (
-        <div key={item.id} className="flex  flex-col">
+        <div key={item.id} className="flex flex-col">
           <div className="flex items-center">
             {parentLines.map((showLine, i) => (
               <div
@@ -85,17 +88,20 @@ export function MenuFileTree({ menus }: MenuFileTreeProps) {
                 <div className="w-4" />
               )}
               <span className="text-sm">{item.name}</span>
-              {/* {item.info && (
-                <button className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600">
+              {item.depth !== 0 && (
+                <button
+                  className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600"
+                  onClick={() => onAdd?.(item)}
+                >
                   <Plus className="h-3 w-3" />
                   <span className="sr-only">Add</span>
                 </button>
-              )} */}
+              )}
             </div>
           </div>
-          {hasChildren && expandedItems.has(item.id) && (
+          {hasChildren && expandedItems.has(item.id) && item.children && (
             <div className="flex flex-col">
-              {renderTreeItems(item.children!, level + 1, currentLines)}
+              {renderTreeItems(item.children, level + 1, currentLines)}
             </div>
           )}
         </div>
