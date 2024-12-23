@@ -10,6 +10,7 @@ import { Sidebar } from "app/components/SideBar";
 import axios from "axios";
 import MenuHeader from "app/components/MenuHeader";
 import { MenuFileTree } from "app/components/MenuFileTree";
+import FormMenu from "app/components/FormMenu";
 
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -62,9 +63,14 @@ const MenusPage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-[450px] hide-scrollbar overflow-y-scroll">
+      <div className="w-full hide-scrollbar overflow-y-scroll">
         <MenuHeader />
-        <MenuFileTree />
+        <div className="flex w-full items-center">
+          <div className="w-[450px] hide-scrollbar overflow-y-scroll">
+            <MenuFileTree />
+          </div>
+          <FormMenu />
+        </div>
       </div>
     </div>
   );
