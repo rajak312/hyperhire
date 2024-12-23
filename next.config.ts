@@ -5,6 +5,13 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  redirects: async () => [
+    {
+      source: "/",
+      destination: "/menus",
+      permanent: true,
+    },
+  ],
 };
 
 export default nextConfig;
