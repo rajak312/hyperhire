@@ -21,17 +21,32 @@ export const Sidebar: React.FC<SidebarProps> = ({ onSelectMainMenu }) => {
 
   return (
     <aside className="h-screen w-64 bg-[#0F172A] text-white flex flex-col p-4">
+      {/* Logo */}
       <div className="flex items-center justify-between mb-6">
-        <span className="text-2xl font-bold">CLOIT</span>
-        <button className="text-xl">&#9776;</button>
+        <Image
+          src="/logo.png"
+          alt="CLOIT Logo"
+          width={80}
+          height={40}
+          className="rounded-lg"
+        />
+        <Image
+          src="/menu.png"
+          alt="menu"
+          width={40}
+          height={40}
+          className="rounded-lg"
+        />
       </div>
+
+      {/* Menu Items */}
       <nav>
         <ul className="space-y-2">
           <li
             className={`px-4 py-2 rounded-lg cursor-pointer flex items-center ${
               activeMainMenu === "Systems"
-                ? "bg-white text-black"
-                : "hover:bg-gray-800"
+                ? "text-white"
+                : "hover:bg-gray-800 text-gray-400"
             }`}
             onClick={() => handleMainMenuClick("Systems")}
           >
@@ -53,10 +68,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ onSelectMainMenu }) => {
             ].map((submenu) => (
               <li
                 key={submenu.name}
-                className={`pl-8 px-4 py-2 rounded-lg cursor-pointer flex items-center ${
+                className={`mt-2 px-4 py-2 rounded-lg cursor-pointer flex items-center ${
                   activeSubMenu === submenu.name
-                    ? "bg-[#9FF443] text-black"
-                    : "hover:bg-gray-800"
+                    ? "bg-[#9FF443] text-black shadow"
+                    : "hover:bg-gray-800 text-gray-400"
                 }`}
                 onClick={() => handleSubMenuClick(submenu.name)}
               >
@@ -70,11 +85,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ onSelectMainMenu }) => {
                 {submenu.name}
               </li>
             ))}
+
           <li
             className={`px-4 py-2 rounded-lg cursor-pointer flex items-center ${
               activeMainMenu === "Users & Group"
-                ? "bg-white text-black"
-                : "hover:bg-gray-800"
+                ? "text-white"
+                : "hover:bg-gray-800 text-gray-400"
             }`}
             onClick={() => handleMainMenuClick("Users & Group")}
           >
@@ -87,11 +103,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ onSelectMainMenu }) => {
             />
             Users & Group
           </li>
+
           <li
             className={`px-4 py-2 rounded-lg cursor-pointer flex items-center ${
               activeMainMenu === "Competition"
-                ? "bg-white text-black"
-                : "hover:bg-gray-800"
+                ? "text-white"
+                : "hover:bg-gray-800 text-gray-400"
             }`}
             onClick={() => handleMainMenuClick("Competition")}
           >
