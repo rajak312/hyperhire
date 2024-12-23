@@ -21,7 +21,7 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const validate = () => {
+  const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
     if (!formValues.name || formValues.name.trim().length === 0) {
@@ -58,8 +58,11 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
   return (
     <form className="max-w-md space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">MenuID</label>
+        <label htmlFor="menuId" className="block text-sm text-gray-600">
+          MenuID
+        </label>
         <input
+          id="menuId"
           type="text"
           value={menu.id}
           readOnly
@@ -68,8 +71,11 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">Depth</label>
+        <label htmlFor="depth" className="block text-sm text-gray-600">
+          Depth
+        </label>
         <input
+          id="depth"
           type="number"
           value={menu.depth}
           readOnly
@@ -79,7 +85,11 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
 
       <div className="space-y-1.5">
         <label className="block text-sm text-gray-600">parentId</label>
+        <label htmlFor="parentData" className="block text-sm text-gray-600">
+          ParentData
+        </label>
         <input
+          id="parentData"
           type="text"
           value={menu.parentId || ""}
           readOnly
@@ -88,8 +98,11 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">Name</label>
+        <label htmlFor="name" className="block text-sm text-gray-600">
+          Name
+        </label>
         <input
+          id="name"
           type="text"
           value={formValues.name}
           onChange={handleChange}
@@ -102,7 +115,7 @@ export default function FormMenu({ menu, onSubmit }: FormMenuProps) {
 
       <button
         type="submit"
-        className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className="px-4 py-2 text-sm font-medium text-white bg-[#253BFF] w-full md:w-[200px] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full"
       >
         Save
       </button>
