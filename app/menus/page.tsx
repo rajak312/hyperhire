@@ -59,7 +59,7 @@ const MenusPage: React.FC = () => {
         <MenuHeader />
         <div className="flex w-full items-center">
           <div className="w-[450px] hide-scrollbar overflow-y-scroll">
-            <MenuFileTree />
+            <MenuFileTree menus={menus} />
           </div>
           <FormMenu />
         </div>

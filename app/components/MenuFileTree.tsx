@@ -1,81 +1,9 @@
-"use client";
-
 import * as React from "react";
-import { ChevronDown, ChevronRight, Plus } from "lucide-react";
+import { ChevronDown, ChevronRight } from "lucide-react";
 import cn from "classnames";
+import { Menu } from "app/store/menuSlice";
 
-interface TreeItem {
-  id: string;
-  label: string;
-  children?: TreeItem[];
-  info?: boolean;
-}
-
-const initialData: TreeItem[] = [
-  {
-    id: "system-management",
-    label: "System Management",
-    children: [
-      {
-        id: "systems",
-        label: "Systems",
-        children: [
-          {
-            id: "system-code",
-            label: "System Code",
-            info: true,
-            children: [
-              { id: "code-registration", label: "Code Registration" },
-              { id: "code-registration-2", label: "Code Registration-2" },
-              { id: "properties", label: "Properties" },
-            ],
-          },
-        ],
-      },
-      {
-        id: "menus",
-        label: "Menus",
-        children: [{ id: "menu-registration", label: "Menu Registration" }],
-      },
-      {
-        id: "api-list",
-        label: "API List",
-        children: [
-          { id: "api-registration", label: "API Registration" },
-          { id: "api-edit", label: "API Edit" },
-        ],
-      },
-      {
-        id: "users-groups",
-        label: "Users & Groups",
-        children: [
-          {
-            id: "users",
-            label: "Users",
-            children: [
-              {
-                id: "user-account-registration",
-                label: "User Account Registration",
-              },
-            ],
-          },
-          {
-            id: "groups",
-            label: "Groups",
-            children: [
-              {
-                id: "user-group-registration",
-                label: "User Group Registration",
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-];
-
-function getAllItemIds(items: TreeItem[]): string[] {
+function getAllItemIds(items: Menu[]): string[] {
   return items.reduce((acc: string[], item) => {
     acc.push(item.id);
     if (item.children) {
@@ -85,7 +13,11 @@ function getAllItemIds(items: TreeItem[]): string[] {
   }, []);
 }
 
-export function MenuFileTree() {
+export interface MenuFileTreeProps {
+  menus: Menu[];
+}
+
+export function MenuFileTree({ menus }: MenuFileTreeProps) {
   const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
     new Set()
   );
@@ -101,7 +33,7 @@ export function MenuFileTree() {
   };
 
   const handleExpandAll = () => {
-    const allIds = getAllItemIds(initialData);
+    const allIds = getAllItemIds(menus);
     setExpandedItems(new Set(allIds));
   };
 
@@ -110,11 +42,11 @@ export function MenuFileTree() {
   };
 
   const renderTreeItems = (
-    items: TreeItem[],
+    items: Menu[],
     level = 0,
     parentLines: boolean[] = []
   ) => {
-    return items.map((item, index) => {
+    return menus?.map((item, index) => {
       const isLastItem = index === items.length - 1;
       const hasChildren = item.children && item.children.length > 0;
       const currentLines = [...parentLines, !isLastItem];
@@ -152,13 +84,13 @@ export function MenuFileTree() {
               ) : (
                 <div className="w-4" />
               )}
-              <span className="text-sm">{item.label}</span>
-              {item.info && (
+              <span className="text-sm">{item.name}</span>
+              {/* {item.info && (
                 <button className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600">
                   <Plus className="h-3 w-3" />
                   <span className="sr-only">Add</span>
                 </button>
-              )}
+              )} */}
             </div>
           </div>
           {hasChildren && expandedItems.has(item.id) && (
@@ -176,14 +108,15 @@ export function MenuFileTree() {
       <div className="flex items-center gap-2 mb-4">
         <button
           className="bg-[#1D2939] text-white p-2 rounded-full"
-          onClick={handleExpandAll}>
+          onClick={handleExpandAll}
+        >
           Expand All
         </button>
         <button className="border p-2 rounded-full" onClick={handleCollapseAll}>
           Collapse All
         </button>
       </div>
-      <div className="flex flex-col">{renderTreeItems(initialData)}</div>
+      <div className="flex flex-col">{renderTreeItems(menus)}</div>
     </div>
   );
 }
