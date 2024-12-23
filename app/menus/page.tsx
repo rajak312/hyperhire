@@ -6,7 +6,6 @@ import { RootState } from "app/store";
 import { fetchMenus, Menu } from "app/store/menuSlice";
 import { useAppDispatch } from "app/hooks/dispatch";
 import MenuForm from "app/components/MenuForm";
-import { MenuTree } from "app/components/MenuTree";
 import { Sidebar } from "app/components/SideBar";
 import { TreeMenu } from "app/components/MenuTree";
 
