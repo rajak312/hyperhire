@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_BASE_URL =
-  process.env.API_BASE_URL || "https://hyperhire-api.onrender.com";
-
 export interface Menu {
   id: string;
   name: string;
@@ -27,14 +24,14 @@ const initialState: MenuState = {
 };
 
 export const fetchMenus = createAsyncThunk("menu/fetchMenus", async () => {
-  const response = await axios.get(`${API_BASE_URL}/menus`);
+  const response = await axios.get(`/api/menus`);
   return response.data;
 });
 
 export const fetchMenuById = createAsyncThunk(
   "menu/fetchMenuById",
   async (id: string) => {
-    const response = await axios.get(`${API_BASE_URL}/menus/${id}`);
+    const response = await axios.get(`/api/menus/${id}`);
     return response.data;
   }
 );
@@ -46,7 +43,7 @@ export const addMenu = createAsyncThunk(
     depth: number;
     parentId: string | null;
   }) => {
-    const response = await axios.post(`${API_BASE_URL}/menus`, menuData);
+    const response = await axios.post(`/api/menus`, menuData);
     return response.data;
   }
 );
@@ -54,7 +51,7 @@ export const addMenu = createAsyncThunk(
 export const updateMenu = createAsyncThunk(
   "menu/updateMenu",
   async ({ id, name }: { id: string; name: string }) => {
-    const response = await axios.put(`${API_BASE_URL}/menus/${id}`, { name });
+    const response = await axios.put(`/api/menus/${id}`, { name });
     return response.data;
   }
 );
@@ -62,7 +59,7 @@ export const updateMenu = createAsyncThunk(
 export const deleteMenu = createAsyncThunk(
   "menu/deleteMenu",
   async (id: string) => {
-    const response = await axios.delete(`${API_BASE_URL}/menus/${id}`);
+    const response = await axios.delete(`/api/menus/${id}`);
     return response.data;
   }
 );
