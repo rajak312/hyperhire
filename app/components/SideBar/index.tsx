@@ -69,32 +69,34 @@ export function Sidebar({
               </li>
 
               {/* Submenus */}
-              {menu.children?.map((submenu) => (
-                <li
-                  key={submenu.id}
-                  className={`ml-6 mt-2 px-4 py-2 rounded-lg cursor-pointer flex items-center ${
-                    activeSubMenu === submenu.id
-                      ? "bg-[#9FF443] text-black shadow"
-                      : "hover:bg-gray-800 text-gray-400"
-                  }`}
-                  onClick={() =>
-                    handleSubMenuClick(
-                      submenu.id,
-                      submenu.name,
-                      submenu.parentId
-                    )
-                  }
-                >
-                  <Image
-                    src="/submenu.png"
-                    alt={`${submenu.name} Icon`}
-                    width={16}
-                    height={16}
-                    className="mr-2"
-                  />
-                  {submenu.name}
-                </li>
-              ))}
+              {menu.children
+                ?.filter((menu) => menu.children?.length)
+                .map((submenu) => (
+                  <li
+                    key={submenu.id}
+                    className={`ml-6 mt-2 px-4 py-2 rounded-lg cursor-pointer flex items-center ${
+                      activeSubMenu === submenu.id
+                        ? "bg-[#9FF443] text-black shadow"
+                        : "hover:bg-gray-800 text-gray-400"
+                    }`}
+                    onClick={() =>
+                      handleSubMenuClick(
+                        submenu.id,
+                        submenu.name,
+                        submenu.parentId
+                      )
+                    }
+                  >
+                    <Image
+                      src="/submenu.png"
+                      alt={`${submenu.name} Icon`}
+                      width={16}
+                      height={16}
+                      className="mr-2"
+                    />
+                    {submenu.name}
+                  </li>
+                ))}
             </React.Fragment>
           );
         })}

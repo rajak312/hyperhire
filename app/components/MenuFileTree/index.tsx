@@ -120,16 +120,16 @@ export function MenuFileTree({ menus, onAdd }: MenuFileTreeProps) {
       <div className="flex items-center gap-2 mb-4">
         <button
           className={`${
-            selectedButton === "expand" ? "bg-[#1D2939]" : ""
-          } text-white p-2 pl-8 pr-8 rounded-full`}
+            selectedButton === "expand" ? "bg-[#1D2939] text-white" : "border"
+          }  p-2 pl-8 pr-8 rounded-full`}
           onClick={handleExpandAll}
         >
           Expand All
         </button>
         <button
           className={`${
-            selectedButton === "collapse" ? "bg-[#1D2939]" : ""
-          }border p-2  pl-8 pr-8  rounded-full`}
+            selectedButton === "collapse" ? "bg-[#1D2939] text-white" : "border"
+          } border p-2  pl-8 pr-8  rounded-full`}
           onClick={handleCollapseAll}
         >
           Collapse All

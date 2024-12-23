@@ -6,11 +6,9 @@ import { RootState } from "app/store";
 import { addMenu, fetchMenus, Menu } from "app/store/menuSlice";
 import { useAppDispatch } from "app/hooks/dispatch";
 import { Sidebar } from "app/components/SideBar";
-import axios from "axios";
 import MenuHeader from "app/components/MenuHeader";
 import { MenuFileTree } from "app/components/MenuFileTree";
 import FormMenu from "app/components/FormMenu";
-import { Menu as MenuIcon } from "lucide-react";
 
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -18,14 +16,7 @@ const MenusPage: React.FC = () => {
   const [openedMenu, setOpenedSubMenu] = useState<string>("");
   const { menus, loading } = useSelector((state: RootState) => state.menu);
 
-  async function fetchMenu() {
-    const response = await axios.get(`https://hyperhire-api.onrender.com/menus
-      `);
-    console.log("direct", response.data);
-  }
-
   useEffect(() => {
-    fetchMenu();
     dispatch(fetchMenus());
   }, [dispatch]);
 
