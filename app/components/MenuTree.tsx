@@ -1,0 +1,189 @@
+"use client";
+
+import * as React from "react";
+import { ChevronDown, ChevronRight, Plus } from "lucide-react";
+import cn from "classnames";
+
+interface TreeItem {
+  id: string;
+  label: string;
+  children?: TreeItem[];
+  info?: boolean;
+}
+
+const initialData: TreeItem[] = [
+  {
+    id: "system-management",
+    label: "System Management",
+    children: [
+      {
+        id: "systems",
+        label: "Systems",
+        children: [
+          {
+            id: "system-code",
+            label: "System Code",
+            info: true,
+            children: [
+              { id: "code-registration", label: "Code Registration" },
+              { id: "code-registration-2", label: "Code Registration-2" },
+              { id: "properties", label: "Properties" },
+            ],
+          },
+        ],
+      },
+      {
+        id: "menus",
+        label: "Menus",
+        children: [{ id: "menu-registration", label: "Menu Registration" }],
+      },
+      {
+        id: "api-list",
+        label: "API List",
+        children: [
+          { id: "api-registration", label: "API Registration" },
+          { id: "api-edit", label: "API Edit" },
+        ],
+      },
+      {
+        id: "users-groups",
+        label: "Users & Groups",
+        children: [
+          {
+            id: "users",
+            label: "Users",
+            children: [
+              {
+                id: "user-account-registration",
+                label: "User Account Registration",
+              },
+            ],
+          },
+          {
+            id: "groups",
+            label: "Groups",
+            children: [
+              {
+                id: "user-group-registration",
+                label: "User Group Registration",
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+];
+
+function getAllItemIds(items: TreeItem[]): string[] {
+  return items.reduce((acc: string[], item) => {
+    acc.push(item.id);
+    if (item.children) {
+      acc.push(...getAllItemIds(item.children));
+    }
+    return acc;
+  }, []);
+}
+
+export function TreeMenu() {
+  const [expandedItems, setExpandedItems] = React.useState<Set<string>>(
+    new Set()
+  );
+
+  const handleToggle = (itemId: string) => {
+    const newExpanded = new Set(expandedItems);
+    if (newExpanded.has(itemId)) {
+      newExpanded.delete(itemId);
+    } else {
+      newExpanded.add(itemId);
+    }
+    setExpandedItems(newExpanded);
+  };
+
+  const handleExpandAll = () => {
+    const allIds = getAllItemIds(initialData);
+    setExpandedItems(new Set(allIds));
+  };
+
+  const handleCollapseAll = () => {
+    setExpandedItems(new Set());
+  };
+
+  const renderTreeItems = (
+    items: TreeItem[],
+    level = 0,
+    parentLines: boolean[] = []
+  ) => {
+    return items.map((item, index) => {
+      const isLastItem = index === items.length - 1;
+      const hasChildren = item.children && item.children.length > 0;
+      const currentLines = [...parentLines, !isLastItem];
+
+      return (
+        <div key={item.id} className="flex flex-col">
+          <div className="flex items-center">
+            {parentLines.map((showLine, i) => (
+              <div
+                key={i}
+                className={cn(
+                  "w-4 h-6 relative",
+                  showLine &&
+                    "before:absolute before:top-0 before:left-1/2 before:border-l before:border-border before:h-full"
+                )}
+              />
+            ))}
+            <div
+              className={cn(
+                "w-4 h-6 relative",
+                "before:absolute before:top-0 before:left-1/2 before:border-l before:border-border",
+                "after:absolute after:top-1/2 after:left-1/2 after:border-t after:border-border after:w-1/2",
+                isLastItem ? "before:h-1/2" : "before:h-full"
+              )}
+            />
+            <div className="flex items-center gap-1 py-1 pr-2 hover:bg-accent rounded-sm cursor-pointer select-none">
+              {hasChildren ? (
+                <span onClick={() => handleToggle(item.id)}>
+                  {expandedItems.has(item.id) ? (
+                    <ChevronDown className="h-4 w-4 shrink-0" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 shrink-0" />
+                  )}
+                </span>
+              ) : (
+                <div className="w-4" />
+              )}
+              <span className="text-sm">{item.label}</span>
+              {item.info && (
+                <button className="ml-auto h-4 flex justify-center items-center w-4 rounded-full bg-blue-500 p-0 text-white hover:bg-blue-600">
+                  <Plus className="h-3 w-3" />
+                  <span className="sr-only">Add</span>
+                </button>
+              )}
+            </div>
+          </div>
+          {hasChildren && expandedItems.has(item.id) && (
+            <div className="flex flex-col">
+              {renderTreeItems(item.children!, level + 1, currentLines)}
+            </div>
+          )}
+        </div>
+      );
+    });
+  };
+
+  return (
+    <div className="w-64 rounded-lg p-4">
+      <div className="flex items-center gap-2 mb-4">
+        <button
+          className="bg-[#1D2939] text-white p-2 rounded-full"
+          onClick={handleExpandAll}>
+          Expand All
+        </button>
+        <button className="border p-2 rounded-full" onClick={handleCollapseAll}>
+          Collapse All
+        </button>
+      </div>
+      <div className="flex flex-col">{renderTreeItems(initialData)}</div>
+    </div>
+  );
+}

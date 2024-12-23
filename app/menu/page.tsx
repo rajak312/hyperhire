@@ -136,8 +136,7 @@ const MenuComponent: React.FC = () => {
       <div key={menu.id} className={`ml-${depth * 4}`}>
         <button
           onClick={() => toggleMenu(menu.id)}
-          className="flex items-center w-full text-gray-700 hover:text-blue-600"
-        >
+          className="flex items-center w-full text-gray-700 hover:text-blue-600">
           {menu.children && (
             <span className="mr-2">
               {expandedMenus.includes(menu.id) ? "▾" : "▸"}
