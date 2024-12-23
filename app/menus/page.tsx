@@ -8,6 +8,7 @@ import { useAppDispatch } from "app/hooks/dispatch";
 import MenuForm from "app/components/MenuForm";
 import { Sidebar } from "app/components/SideBar";
 import { TreeMenu } from "app/components/MenuTree";
+import axios from "axios";
 
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,15 @@ const MenusPage: React.FC = () => {
   );
   const [showForm, setShowForm] = useState<boolean>(false);
 
+  async function fetchMenu() {
+    const response = await axios.get(
+      "https://hyperhire-api.onrender.com/menus"
+    );
+    console.log("Menus", response.data);
+  }
+
   useEffect(() => {
+    fetchMenu();
     dispatch(fetchMenus());
   }, [dispatch]);
 
@@ -47,7 +56,7 @@ const MenusPage: React.FC = () => {
   return (
     <div className="flex bg-white text-black h-screen">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar menus={menus} />
 
       {/* Main Content */}
       <TreeMenu />
