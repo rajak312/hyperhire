@@ -21,7 +21,7 @@ export default function FormMenu() {
 
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const validate = () => {
+  const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
     if (!formValues.depth || isNaN(Number(formValues.depth))) {
@@ -30,11 +30,11 @@ export default function FormMenu() {
       newErrors.depth = "Depth must be greater than 0.";
     }
 
-    if (!formValues.parentData || formValues.parentData.trim().length === 0) {
+    if (!formValues.parentData.trim()) {
       newErrors.parentData = "ParentData is required.";
     }
 
-    if (!formValues.name || formValues.name.trim().length === 0) {
+    if (!formValues.name.trim()) {
       newErrors.name = "Name is required.";
     }
 
@@ -45,13 +45,18 @@ export default function FormMenu() {
 
   const handleChange =
     (field: keyof FormValues) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setFormValues({
-        ...formValues,
-        [field]: e.target.value,
-      });
+      const value = e.target.value;
+
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [field]: value,
+      }));
 
       if (errors[field]) {
-        setErrors({ ...errors, [field]: undefined }); // Clear error for the field
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [field]: undefined,
+        }));
       }
     };
 
@@ -60,15 +65,20 @@ export default function FormMenu() {
 
     if (validate()) {
       console.log("Form Submitted:", formValues);
-      // Perform your form submission logic here
+      alert("Form submitted successfully!");
+      // Clear the form if needed
+      // setFormValues({ depth: "", parentData: "", name: "" });
     }
   };
 
   return (
     <form className="max-w-md space-y-4" onSubmit={handleSubmit}>
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">MenuID</label>
+        <label htmlFor="menuId" className="block text-sm text-gray-600">
+          MenuID
+        </label>
         <input
+          id="menuId"
           type="text"
           value="56320ee9-6af6-11ed-a7ba-f220afe5e4a9"
           readOnly
@@ -77,8 +87,11 @@ export default function FormMenu() {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">Depth</label>
+        <label htmlFor="depth" className="block text-sm text-gray-600">
+          Depth
+        </label>
         <input
+          id="depth"
           type="number"
           value={formValues.depth}
           onChange={handleChange("depth")}
@@ -90,8 +103,11 @@ export default function FormMenu() {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">ParentData</label>
+        <label htmlFor="parentData" className="block text-sm text-gray-600">
+          ParentData
+        </label>
         <input
+          id="parentData"
           type="text"
           value={formValues.parentData}
           onChange={handleChange("parentData")}
@@ -105,8 +121,11 @@ export default function FormMenu() {
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm text-gray-600">Name</label>
+        <label htmlFor="name" className="block text-sm text-gray-600">
+          Name
+        </label>
         <input
+          id="name"
           type="text"
           value={formValues.name}
           onChange={handleChange("name")}
@@ -119,7 +138,7 @@ export default function FormMenu() {
 
       <button
         type="submit"
-        className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        className="px-4 py-2 text-sm font-medium text-white bg-[#253BFF] w-full md:w-[200px] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 rounded-full">
         Save
       </button>
     </form>

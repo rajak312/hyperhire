@@ -11,6 +11,7 @@ import axios from "axios";
 import MenuHeader from "app/components/MenuHeader";
 import { MenuFileTree } from "app/components/MenuFileTree";
 import FormMenu from "app/components/FormMenu";
+import { Menu as MenuIcon } from "lucide-react";
 
 const MenusPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -55,13 +56,18 @@ const MenusPage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="w-full hide-scrollbar overflow-y-scroll">
-        <MenuHeader />
-        <div className="flex w-full items-center">
-          <div className="w-[450px] hide-scrollbar overflow-y-scroll">
+      <div className="w-full  hide-scrollbar overflow-y-scroll">
+        <div className="w-[450px] ">
+          <MenuHeader />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-6">
+          <div className="w-full  hide-scrollbar overflow-y-scroll">
             <MenuFileTree />
           </div>
-          <FormMenu />
+          <div className="w-full p-4 ">
+            <FormMenu />
+          </div>
         </div>
       </div>
     </div>
