@@ -1,8 +1,8 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-const API_BASE_URL =
-  process.env.API_BASE_URL || "https://hyperhire-api.onrender.com";
+const NEXT_PUBLIC_API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL || "https://hyperhire-api.onrender.com";
 
 export async function GET(
   request: Request,
@@ -10,7 +10,9 @@ export async function GET(
 ) {
   const id = (await params).id;
   try {
-    const response = await axios.get(`${API_BASE_URL}/menus/tree/${id}`);
+    const response = await axios.get(
+      `${NEXT_PUBLIC_API_BASE_URL}/menus/tree/${id}`
+    );
     return NextResponse.json(response.data);
   } catch (error) {
     console.error("Error fetching menu tree:", error);

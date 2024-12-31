@@ -1,5 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios, { AxiosInstance } from "axios";
+
+const NEXT_PUBLIC_API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+const api: AxiosInstance = axios.create({
+  baseURL: NEXT_PUBLIC_API_BASE_URL
+    ? NEXT_PUBLIC_API_BASE_URL
+    : `${BASE_URL}/api`,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+axios.defaults.baseURL =
+  NEXT_PUBLIC_API_BASE_URL || "https://hyperhireapi.onrender.com";
 
 export interface Menu {
   id: string;
@@ -25,14 +40,14 @@ const initialState: MenuState = {
 };
 
 export const fetchMenus = createAsyncThunk("menu/fetchMenus", async () => {
-  const response = await axios.get(`/api/menus`);
+  const response = await api.get(`menus`);
   return response.data;
 });
 
 export const fetchMenuById = createAsyncThunk(
   "menu/fetchMenuById",
   async (id: string) => {
-    const response = await axios.get(`/api/menus/${id}`);
+    const response = await api.get(`menus/${id}`);
     return response.data;
   }
 );
@@ -40,7 +55,7 @@ export const fetchMenuById = createAsyncThunk(
 export const fetchMenuTreeById = createAsyncThunk(
   "menus/fetchMenuTreeById",
   async (id: string) => {
-    const response = await axios.get(`/api/menus/tree/${id}`);
+    const response = await api.get(`menus/tree/${id}`);
     return response.data;
   }
 );
@@ -48,7 +63,7 @@ export const fetchMenuTreeById = createAsyncThunk(
 export const addMenu = createAsyncThunk(
   "menu/addMenu",
   async (menuData: { name: string; parentId: string | null }) => {
-    const response = await axios.post(`/api/menus`, menuData);
+    const response = await api.post(`menus`, menuData);
     return response.data;
   }
 );
@@ -56,7 +71,7 @@ export const addMenu = createAsyncThunk(
 export const updateMenu = createAsyncThunk(
   "menu/updateMenu",
   async ({ id, name }: { id: string; name: string }) => {
-    const response = await axios.put(`/api/menus/${id}`, { name });
+    const response = await api.put(`menus/${id}`, { name });
     return response.data;
   }
 );
@@ -64,7 +79,7 @@ export const updateMenu = createAsyncThunk(
 export const deleteMenu = createAsyncThunk(
   "menu/deleteMenu",
   async (id: string) => {
-    const response = await axios.delete(`/api/menus/${id}`);
+    const response = await api.delete(`menus/${id}`);
     return response.data;
   }
 );
