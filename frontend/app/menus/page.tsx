@@ -42,6 +42,12 @@ const MenusPage: React.FC = () => {
     dispatch(fetchMenus());
   }, [dispatch]);
 
+  useEffect(() => {
+    if (selectedMenu || !menuTree || !selectedMenuId) return;
+    setSelectedMenu(menuTree);
+    setIsEdit(true);
+  }, [selectedMenu, menuTree, selectedMenuId]);
+
   const handleSubmit = async (id: string, name: string) => {
     if (isEdit) {
       dispatch(
@@ -66,7 +72,7 @@ const MenusPage: React.FC = () => {
 
   function handleMenuChange(id: string) {
     setSelectedMenuId(id);
-    setSelectedMenu(menus?.find((menu) => menu.id === id) || null);
+    // setSelectedMenu(menus?.find((menu) => menu.id === id) || null);
     dispatch(fetchMenuTreeById(id));
     dispatch(fetchMenus());
   }
@@ -80,6 +86,8 @@ const MenusPage: React.FC = () => {
     dispatch(deleteMenu(id));
     dispatch(fetchMenus());
   }
+
+  console.log("menuTree", selectedMenu);
 
   return (
     <div className="flex bg-white text-black h-screen">
@@ -103,7 +111,7 @@ const MenusPage: React.FC = () => {
           />
         </div>
 
-        {loading ? (
+        {loading || !menuTree ? (
           <Loader />
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 w-full">
